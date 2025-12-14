@@ -5,12 +5,7 @@ namespace DictionaryService.Domain.DepartmentLocations;
 
 public class DepartmentLocation
 {
-    // EF Core
-    private DepartmentLocation()
-    {
-    }
-
-    private DepartmentLocation(
+    public DepartmentLocation(
         Guid departmentId,
         Guid locationId)
     {
@@ -19,16 +14,14 @@ public class DepartmentLocation
         LocationId = locationId;
     }
 
+    // EF Core
+    private DepartmentLocation()
+    {
+    }
+
     public Guid Id { get; private set; }
 
     public Guid DepartmentId { get; private set; }
 
     public Guid LocationId { get; private set; }
-
-    public static Result<DepartmentLocation, Error> Create(
-        Guid departmentId,
-        Guid locationId)
-    {
-        return new DepartmentLocation(departmentId, locationId);
-    }
 }

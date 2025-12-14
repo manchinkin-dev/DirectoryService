@@ -6,12 +6,9 @@ namespace DictionaryService.Domain.Locations;
 
 public class Location
 {
-    // EF Core
-    private Location()
-    {
-    }
+    private readonly List<DepartmentLocation> _departments = [];
 
-    private Location(
+    public Location(
         LocationName name,
         string address,
         string timeZone,
@@ -27,7 +24,10 @@ public class Location
         _departments = departments.ToList();
     }
 
-    private readonly List<DepartmentLocation> _departments = [];
+    // EF Core
+    private Location()
+    {
+    }
 
     public Guid Id { get; private set; }
 
@@ -44,13 +44,4 @@ public class Location
     public DateTime CreatedAt { get; private set; }
 
     public DateTime UpdatedAt { get; private set; }
-
-    public static Result<Location, Error> Create(
-        LocationName name,
-        string address,
-        string timeZone,
-        IEnumerable<DepartmentLocation> departments)
-    {
-        return new Location(name, address, timeZone, departments);
-    }
 }

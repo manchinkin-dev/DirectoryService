@@ -6,12 +6,9 @@ namespace DictionaryService.Domain.Positions;
 
 public class Position
 {
-    // EF Core
-    private Position()
-    {
-    }
+    private readonly List<DepartmentPosition> _departments = [];
 
-    private Position(
+    public Position(
         PositionName name,
         PositionDescription description,
         IEnumerable<DepartmentPosition> departments)
@@ -25,7 +22,10 @@ public class Position
         _departments = departments.ToList();
     }
 
-    private readonly List<DepartmentPosition> _departments = [];
+    // EF Core
+    private Position()
+    {
+    }
 
     public Guid Id { get; private set; }
 
@@ -40,12 +40,4 @@ public class Position
     public DateTime CreatedAt { get; private set; }
 
     public DateTime UpdatedAt { get; private set; }
-
-    public static Result<Position, Error> Create(
-        PositionName name,
-        PositionDescription description,
-        IEnumerable<DepartmentPosition> positions)
-    {
-        return new Position(name, description, positions);
-    }
 }

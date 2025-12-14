@@ -7,12 +7,10 @@ namespace DictionaryService.Domain.Departments;
 
 public class Department
 {
-    // EF Core
-    private Department()
-    {
-    }
+    private readonly List<DepartmentLocation> _locations = [];
+    private readonly List<DepartmentPosition> _positions = [];
 
-    private Department(
+    public Department(
         DepartmentName name,
         Identifier identifier,
         Guid? parentId,
@@ -34,8 +32,10 @@ public class Department
         _positions = positions.ToList();
     }
 
-    private readonly List<DepartmentLocation> _locations = [];
-    private readonly List<DepartmentPosition> _positions = [];
+    // EF Core
+    private Department()
+    {
+    }
 
     public Guid Id { get; private set; }
 
@@ -57,19 +57,7 @@ public class Department
 
     public bool IsActive { get; private set; }
 
-    public DateTime CreatedAt { private get; set; }
+    public DateTime CreatedAt { get; private set; }
 
-    public DateTime UpdatedAt { private get; set; }
-
-    public static Result<Department, Error> Create(
-        DepartmentName name,
-        Identifier identifier,
-        Guid? parentId,
-        DepartmentPath path,
-        short depth,
-        IEnumerable<DepartmentLocation> locations,
-        IEnumerable<DepartmentPosition> positions)
-    {
-        return new Department(name, identifier, parentId, path, depth, locations, positions);
-    }
+    public DateTime UpdatedAt { get; private set; }
 }
