@@ -1,18 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryService.Domain", "src\DictionaryService.Domain\DictionaryService.Domain.csproj", "{E33D1894-9BE9-42EB-80FE-00E23569FD3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Domain", "src\DirectoryService.Domain\DirectoryService.Domain.csproj", "{E33D1894-9BE9-42EB-80FE-00E23569FD3E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0703814A-D0B6-425C-805D-5EB616203620}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryService.Application", "src\DictionaryService.Application\DictionaryService.Application.csproj", "{125316B9-95FD-43F3-9157-D76622C74BC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Application", "src\DirectoryService.Application\DirectoryService.Application.csproj", "{125316B9-95FD-43F3-9157-D76622C74BC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryService.Infrastructure", "src\DictionaryService.Infrastructure\DictionaryService.Infrastructure.csproj", "{CDF013CC-F3EE-4268-89FF-1E3D6DFBE8CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Infrastructure.Postgres", "src\DirectoryService.Infrastructure.Postgres\DirectoryService.Infrastructure.Postgres.csproj", "{CDF013CC-F3EE-4268-89FF-1E3D6DFBE8CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Presentation", "src\DirectoryService.Presentation\DirectoryService.Presentation.csproj", "{0DD356E6-B7CE-4AB3-BEEC-972CFCF071D3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Contracts", "src\DirectoryService.Contracts\DirectoryService.Contracts.csproj", "{7BB0DD65-E1DA-46D7-A295-35DE6A3F33C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryService.Web", "src\DictionaryService.Web\DictionaryService.Web.csproj", "{23008144-00FC-47F6-B9F6-26DD07944F24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryService.Web", "src\DirectoryService.Web\DirectoryService.Web.csproj", "{23008144-00FC-47F6-B9F6-26DD07944F24}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9217C1B1-92B1-4B72-8F73-5C6216CFC957}"
 	ProjectSection(SolutionItems) = preProject
