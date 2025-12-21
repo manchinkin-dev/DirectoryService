@@ -1,4 +1,6 @@
-﻿namespace DirectoryService.Domain.Locations;
+﻿using System.Text.Json.Serialization;
+
+namespace DirectoryService.Domain.Locations;
 
 public record LocationAddress
 {
@@ -16,6 +18,7 @@ public record LocationAddress
         PostalCode = postalCode;
     }
 
+    [JsonIgnore]
     public string FullAddress => $"{PostalCode}, {Country}, {City}, {Street}, {HouseNumber}";
 
     public string City { get; }

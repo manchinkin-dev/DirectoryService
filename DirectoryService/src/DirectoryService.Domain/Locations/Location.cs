@@ -9,8 +9,7 @@ public class Location
     public Location(
         LocationName name,
         LocationAddress address,
-        TimeZone timeZone,
-        IEnumerable<DepartmentLocation> departments)
+        TimeZone timeZone)
     {
         Id = new LocationId(Guid.NewGuid());
         Name = name;
@@ -19,7 +18,6 @@ public class Location
         IsActive = true;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
-        _departments = departments.ToList();
     }
 
     // EF Core
