@@ -1,5 +1,6 @@
 ﻿using DirectoryService.Application.Locations;
 using DirectoryService.Contracts.Locations;
+using DirectoryService.Presentation.EndpointResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DirectoryService.Presentation.Locations;
@@ -9,18 +10,11 @@ namespace DirectoryService.Presentation.Locations;
 public class LocationsController : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<Guid>> Create(
+    public async Task<EndpointResult<Guid>> Create(
         [FromServices] CreateLocationHandler handler,
         [FromBody] CreateLocationDto locationDto,
         CancellationToken cancellationToken)
     {
-        var result = await handler.Handle(locationDto, cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return BadRequest(result.Error);
-        }
-
-        return Ok(result.Value);
+        return await handler.Handle(locationDto, cancellationToken);
     }
 }
