@@ -29,12 +29,17 @@ public class CreateLocationHandler
             return nameResult.Error;
         }
 
-        var address = new LocationAddress(
+        var addressResult = LocationAddress.Create(
             createLocationDto.Address.Country,
             createLocationDto.Address.City,
             createLocationDto.Address.Street,
             createLocationDto.Address.HouseNumber,
             createLocationDto.Address.PostalCode);
+
+        if (addressResult.IsFailure)
+        {
+            return addressResult.Error;
+        }
 
         var timeZoneResult = TimeZone.Create(createLocationDto.TimeZone);
 
@@ -43,7 +48,7 @@ public class CreateLocationHandler
             return timeZoneResult.Error;
         }
 
-        var location = new Location(nameResult.Value, address, timeZoneResult.Value);
+        var location = new Location(nameResult.Value, addressResult.Value, timeZoneResult.Value);
 
         await _locationsRepository.AddAsync(location, cancellationToken);
 
