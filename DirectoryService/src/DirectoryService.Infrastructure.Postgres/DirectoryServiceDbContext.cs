@@ -5,6 +5,7 @@ using DirectoryService.Domain.Locations;
 using DirectoryService.Domain.Positions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace DirectoryService.Infrastructure;
 
@@ -23,7 +24,11 @@ public class DirectoryServiceDbContext : DbContext
     {
         base.OnConfiguring(optionsBuilder);
 
-        optionsBuilder.UseNpgsql(_connectionString);
+        var dataSource = new NpgsqlDataSourceBuilder(_connectionString)
+            .EnableDynamicJson()
+            .Build();
+
+        optionsBuilder.UseNpgsql(dataSource);
 
         if (_isDevelopment)
         {
