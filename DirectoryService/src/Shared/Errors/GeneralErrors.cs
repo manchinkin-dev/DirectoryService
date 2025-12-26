@@ -1,4 +1,4 @@
-﻿namespace DirectoryService.Domain.Shared;
+﻿namespace Shared.Errors;
 
 public static class GeneralErrors
 {
@@ -16,7 +16,7 @@ public static class GeneralErrors
 
     public static Error ValueIsRequired(string? name = null)
     {
-        string label = name == null ? string.Empty : " " + name + " ";
+        string label = name ?? string.Empty;
         return Error.Validation("length.is.invalid", $"Поле {label} обязательно");
     }
 
