@@ -2,7 +2,6 @@
 using DirectoryService.Application;
 using DirectoryService.Domain.Locations;
 using Microsoft.Extensions.Logging;
-using Shared;
 using Shared.Errors;
 
 namespace DirectoryService.Infrastructure;
@@ -24,7 +23,7 @@ public class LocationsRepository : ILocationsRepository
     {
         try
         {
-            _dbContext.Locations.Add(location);
+            await _dbContext.Locations.AddAsync(location, cancellationToken);
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

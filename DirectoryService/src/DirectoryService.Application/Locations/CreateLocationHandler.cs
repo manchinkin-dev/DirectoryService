@@ -51,7 +51,12 @@ public class CreateLocationHandler
 
         var location = new Location(nameResult.Value, addressResult.Value, timeZoneResult.Value);
 
-        await _locationsRepository.AddAsync(location, cancellationToken);
+        var addLocationResult = await _locationsRepository.AddAsync(location, cancellationToken);
+
+        if (addLocationResult.IsFailure)
+        {
+            return addLocationResult.Error;
+        }
 
         _logger.LogInformation("Локация создана с индентификатором - {locationId}.", location.Id.Value);
 
