@@ -1,13 +1,20 @@
+using System.Globalization;
 using DirectoryService.Infrastructure;
 using DirectoryService.Presentation.EndpointResults;
 using DirectoryService.Web;
+using DirectoryService.Web.Middlewares;
 using Microsoft.OpenApi.Models;
-using Shared;
+using Serilog;
 using Shared.Errors;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddProgramDependencies();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+    .CreateLogger();
+
+builder.Services.AddProgramDependencies(builder.Configuration);
 
 builder.Services.AddScoped<DirectoryServiceDbContext>(_ =>
     new DirectoryServiceDbContext(builder.Configuration.GetConnectionString("DirectoryServiceDb")!,  builder.Environment.IsDevelopment()));
@@ -35,6 +42,8 @@ builder.Services.AddOpenApi(
     });
 
 var app = builder.Build();
+
+app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
