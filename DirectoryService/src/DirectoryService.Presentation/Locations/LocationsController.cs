@@ -12,9 +12,11 @@ public class LocationsController : ControllerBase
     [HttpPost]
     public async Task<EndpointResult<Guid>> Create(
         [FromServices] CreateLocationHandler handler,
-        [FromBody] CreateLocationDto locationDto,
+        [FromBody] CreateLocationRequest request,
         CancellationToken cancellationToken)
     {
-        return await handler.Handle(locationDto, cancellationToken);
+        var command = new CreateLocationCommand(request);
+
+        return await handler.Handle(command, cancellationToken);
     }
 }

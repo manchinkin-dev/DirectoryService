@@ -1,4 +1,5 @@
-﻿using DirectoryService.Domain.Locations;
+﻿using System.Text.Json;
+using DirectoryService.Domain.Locations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TimeZone = DirectoryService.Domain.Locations.TimeZone;
@@ -36,7 +37,11 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
         builder
             .Property(l => l.Address)
             .HasColumnName("address")
-            .HasColumnType("jsonb");
+            .HasColumnType("jsonb")
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                v => JsonSerializer.Deserialize<LocationAddress>(v, (JsonSerializerOptions?)null)!);
+        builder.HasIndex(l => l.Address).IsUnique();
 
         builder
             .Property(l => l.TimeZone)
