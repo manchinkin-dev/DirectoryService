@@ -1,5 +1,7 @@
-﻿using DirectoryService.Domain.DepartmentLocations;
+﻿using CSharpFunctionalExtensions;
+using DirectoryService.Domain.DepartmentLocations;
 using DirectoryService.Domain.DepartmentPositions;
+using Shared.Errors;
 
 namespace DirectoryService.Domain.Departments;
 
@@ -9,15 +11,15 @@ public class Department
     private readonly List<DepartmentPosition> _positions = [];
 
     public Department(
+        DepartmentId? id,
         DepartmentName name,
         Identifier identifier,
         DepartmentId? parentId,
         DepartmentPath path,
-        short depth,
-        IEnumerable<DepartmentLocation> locations,
-        IEnumerable<DepartmentPosition> positions)
+        int depth,
+        IEnumerable<DepartmentLocation> locations)
     {
-        Id = new DepartmentId(Guid.NewGuid());
+        Id = id ?? new DepartmentId(Guid.NewGuid());
         Name = name;
         Identifier = identifier;
         ParentId = parentId;
@@ -27,7 +29,6 @@ public class Department
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = CreatedAt;
         _locations = locations.ToList();
-        _positions = positions.ToList();
     }
 
     // EF Core
@@ -47,15 +48,52 @@ public class Department
 
     public DepartmentId? ParentId { get; private set; }
 
-    public IReadOnlyList<Department> Children = [];
+    public List<Department> Children = [];
 
     public DepartmentPath Path { get; private set; } = null!;
 
-    public short Depth { get; private set; }
+    public int Depth { get; private set; }
 
     public bool IsActive { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
 
     public DateTime UpdatedAt { get; private set; }
+
+    public static Result<Department, Error> CreateParent(
+        DepartmentName name,
+        Identifier identifier,
+        IEnumerable<DepartmentLocation> departmentLocations,
+        DepartmentId departmentId)
+    {
+        var path = DepartmentPath.CreateParent(identifier);
+
+        return new Department(
+            departmentId,
+            name,
+            identifier,
+            null,
+            path,
+            0,
+            departmentLocations);
+    }
+
+    public static Result<Department, Error> CreateChild(
+        DepartmentName name,
+        Identifier identifier,
+        Department parent,
+        IEnumerable<DepartmentLocation> departmentLocations,
+        DepartmentId departmentId)
+    {
+        var path = parent.Path.CreateChild(identifier);
+
+        return new Department(
+            departmentId,
+            name,
+            identifier,
+            parent.Id,
+            path,
+            parent.Depth + 1,
+            departmentLocations);
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace Shared.Errors;
+﻿using System.Text.Json.Serialization;
+
+namespace Shared.Errors;
 
 public record Error
 {
@@ -55,6 +57,7 @@ public record Error
     public Errors ToErrors() => new([this]);
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ErrorType
 {
     VALIDATION,

@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json.Serialization;
 using DirectoryService.Infrastructure;
 using DirectoryService.Presentation.EndpointResults;
 using DirectoryService.Web;
@@ -29,7 +30,7 @@ builder.Services.AddOpenApi(
                 {
                     if (schema.Properties.TryGetValue("errors", out var errorsProp))
                     {
-                        errorsProp.Items.Reference = new OpenApiReference()
+                        errorsProp.Items.Reference = new OpenApiReference
                         {
                             Type = ReferenceType.Schema,
                             Id = "Error",

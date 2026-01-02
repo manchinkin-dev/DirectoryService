@@ -7,11 +7,12 @@ public class Position
     private readonly List<DepartmentPosition> _departments = [];
 
     public Position(
+        PositionId? positionId,
         PositionName name,
         PositionDescription description,
         IEnumerable<DepartmentPosition> departments)
     {
-        Id = new PositionId(Guid.NewGuid());
+        Id = positionId ?? new PositionId(Guid.NewGuid());
         Name = name;
         Description = description;
         IsActive = true;

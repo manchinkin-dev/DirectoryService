@@ -1,10 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using DirectoryService.Application;
+using DirectoryService.Application.Locations;
 using DirectoryService.Domain.Locations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Shared.Errors;
 
-namespace DirectoryService.Infrastructure;
+namespace DirectoryService.Infrastructure.Repositories;
 
 public class LocationsRepository : ILocationsRepository
 {
@@ -35,5 +36,26 @@ public class LocationsRepository : ILocationsRepository
 
             return Error.Failure("location.insert", "Ошибка добавления локации");
         }
+    }
+
+    public async Task<UnitResult<Errors>> CheckExistingAsync(
+        Guid[] locationIds,
+        CancellationToken cancellationToken = default)
+    {
+        var ids = locationIds.Select(id => new LocationId(id));
+
+        var resultIds = await _dbContext.Locations
+            .AsNoTracking()
+            .Where(l => ids.Contains(l.Id) && l.IsActive)
+            .Select(l => l.Id.Value)
+            .ToListAsync(cancellationToken);
+
+        var missingIds = locationIds.Except(resultIds);
+
+        var errors = missingIds.Select(mi => GeneralErrors.NotFound(mi, "идентификатор локации")).ToList();
+
+        return errors.Count != 0
+            ? UnitResult.Failure(new Errors(errors))
+            : UnitResult.Success<Errors>();
     }
 }
