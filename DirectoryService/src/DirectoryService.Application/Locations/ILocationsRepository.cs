@@ -1,11 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Locations;
-using Shared;
 using Shared.Errors;
 
-namespace DirectoryService.Application;
+namespace DirectoryService.Application.Locations;
 
 public interface ILocationsRepository
 {
     Task<Result<Guid, Error>> AddAsync(Location location, CancellationToken cancellationToken = default);
+
+    Task<UnitResult<Errors>> CheckExistingAsync(Guid[] locationIds, CancellationToken cancellationToken = default);
 }

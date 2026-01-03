@@ -25,7 +25,7 @@ public partial record Identifier
             return GeneralErrors.ValueIsRequired("идентификатор подразделения");
         }
 
-        if (value.Length < IDENTIFIER_MIN_LENGTH || value.Length > IDENTIFIER_MAX_LENGTH || !_regex.IsMatch(value))
+        if (value.Length < IDENTIFIER_MIN_LENGTH || value.Length > IDENTIFIER_MAX_LENGTH || _regex.IsMatch(value))
         {
             return GeneralErrors.ValueIsInvalid("идентификатор подразделения");
         }

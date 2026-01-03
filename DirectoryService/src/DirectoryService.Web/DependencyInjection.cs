@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using DirectoryService.Application;
 using DirectoryService.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 namespace DirectoryService.Web;
@@ -21,6 +22,12 @@ public static class DependencyInjection
     private static IServiceCollection AddWebDependencies(this IServiceCollection services)
     {
         services.AddControllers();
+
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true;
+        });
+
         services.AddOpenApi();
 
         return services;

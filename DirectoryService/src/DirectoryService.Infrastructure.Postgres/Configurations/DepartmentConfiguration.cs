@@ -51,7 +51,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
             .HasColumnName("path")
             .HasConversion(
                 d => d.Value,
-                path => DepartmentPath.Create(path).Value);
+                path => DepartmentPath.Create(path));
 
         builder
             .Property(d => d.Depth)
