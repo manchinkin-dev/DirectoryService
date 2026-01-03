@@ -1,4 +1,5 @@
 ﻿using DirectoryService.Application.Departments;
+using DirectoryService.Application.Departments.CreateDepartment;
 using DirectoryService.Contracts.Departments;
 using DirectoryService.Presentation.EndpointResults;
 using Microsoft.AspNetCore.Mvc;

@@ -9,7 +9,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Shared.Errors;
 
-namespace DirectoryService.Application.Departments;
+namespace DirectoryService.Application.Departments.CreateDepartment;
 
 public class CreateDepartmentHandler
 {
@@ -86,6 +86,8 @@ public class CreateDepartmentHandler
         {
             return addDepartmentResult.Error.ToErrors();
         }
+
+        _logger.LogInformation("Подразделение создано с идентификатором - {departmentId}", departmentResult.Value.Id.Value);
 
         return departmentResult.Value.Id.Value;
     }

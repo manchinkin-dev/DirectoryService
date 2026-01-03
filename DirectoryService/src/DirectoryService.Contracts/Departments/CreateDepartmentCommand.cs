@@ -1,3 +1,0 @@
-﻿namespace DirectoryService.Contracts.Departments;
-
-public record CreateDepartmentCommand(CreateDepartmentRequest Request);

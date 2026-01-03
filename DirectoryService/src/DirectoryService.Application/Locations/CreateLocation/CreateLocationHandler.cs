@@ -4,11 +4,10 @@ using DirectoryService.Contracts.Locations;
 using DirectoryService.Domain.Locations;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared;
 using Shared.Errors;
 using TimeZone = DirectoryService.Domain.Locations.TimeZone;
 
-namespace DirectoryService.Application.Locations;
+namespace DirectoryService.Application.Locations.CreateLocation;
 
 public class CreateLocationHandler
 {

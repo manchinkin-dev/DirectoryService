@@ -1,6 +1,9 @@
 ﻿using DirectoryService.Application.Departments;
+using DirectoryService.Application.Departments.CreateDepartment;
 using DirectoryService.Application.Locations;
+using DirectoryService.Application.Locations.CreateLocation;
 using DirectoryService.Application.Positions;
+using DirectoryService.Application.Positions.CreatePosition;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
