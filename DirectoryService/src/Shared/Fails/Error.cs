@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Shared.Errors;
+namespace Shared.Fails;
 
 public record Error
 {

@@ -3,7 +3,7 @@ using DirectoryService.Application.Departments;
 using DirectoryService.Domain.Departments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Infrastructure.Repositories;
 
@@ -77,5 +77,26 @@ public class DepartmentRepository : IDepartmentRepository
         return errors.Count != 0
             ? UnitResult.Failure(new Errors(errors))
             : UnitResult.Success<Errors>();
+    }
+
+    public async Task<UnitResult<Error>> DeleteLocationsAsync(
+        Guid departmentId,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var id = new DepartmentId(departmentId);
+
+            await _dbContext.DepartmentLocations
+                .Where(dl => dl.DepartmentId == id)
+                .ExecuteDeleteAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка удаления локаций у подразделения - {departmentId}", departmentId);
+            return UnitResult.Failure(GeneralErrors.Failure("Ошибка удаления локаций"));
+        }
+
+        return UnitResult.Success<Error>();
     }
 }

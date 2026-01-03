@@ -1,13 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Application.Departments;
 using DirectoryService.Application.Validation;
-using DirectoryService.Contracts.Positions;
 using DirectoryService.Domain.DepartmentPositions;
 using DirectoryService.Domain.Departments;
 using DirectoryService.Domain.Positions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Application.Positions.CreatePosition;
 

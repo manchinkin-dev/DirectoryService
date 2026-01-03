@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Departments;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Application.Departments;
 
@@ -11,4 +11,6 @@ public interface IDepartmentRepository
     Task<Result<Department, Error>> GetByIdAsync(Guid departmentId, CancellationToken cancellationToken = default);
 
     Task<UnitResult<Errors>> CheckExisting(Guid[] departmentIds, CancellationToken cancellationToken = default);
+
+    Task<UnitResult<Error>> DeleteLocationsAsync(Guid departmentId, CancellationToken cancellationToken = default);
 }
