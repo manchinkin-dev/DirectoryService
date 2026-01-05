@@ -1,5 +1,5 @@
 ﻿using FluentValidation.Results;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Application.Validation;
 

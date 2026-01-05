@@ -3,7 +3,7 @@ using DirectoryService.Application.Positions;
 using DirectoryService.Domain.Positions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Infrastructure.Repositories;
 

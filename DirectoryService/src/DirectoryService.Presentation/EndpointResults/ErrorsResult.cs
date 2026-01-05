@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Presentation.EndpointResults;
 

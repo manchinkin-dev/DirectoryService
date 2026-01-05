@@ -1,8 +1,9 @@
-﻿using System.Text.Json.Serialization;
-using DirectoryService.Application;
+﻿using DirectoryService.Application;
 using DirectoryService.Infrastructure;
+using DirectoryService.Infrastructure.TransactionManager;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Shared.TransactionManager;
 
 namespace DirectoryService.Web;
 
@@ -15,6 +16,8 @@ public static class DependencyInjection
             .AddSerilogLogging(configuration)
             .AddApplicationDependencies()
             .AddPostgresInfrastructureDependencies();
+
+        services.AddScoped<ITransactionManager, TransactionManager>();
 
         return services;
     }

@@ -1,10 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Application.Validation;
-using DirectoryService.Contracts.Locations;
 using DirectoryService.Domain.Locations;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using Shared.Errors;
+using Shared.Fails;
 using TimeZone = DirectoryService.Domain.Locations.TimeZone;
 
 namespace DirectoryService.Application.Locations.CreateLocation;

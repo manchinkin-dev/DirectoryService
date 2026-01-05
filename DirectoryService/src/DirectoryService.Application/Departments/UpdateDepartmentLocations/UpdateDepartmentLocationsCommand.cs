@@ -1,0 +1,5 @@
+﻿using DirectoryService.Contracts.Departments;
+
+namespace DirectoryService.Application.Departments.UpdateDepartmentLocations;
+
+public record UpdateDepartmentLocationsCommand(Guid DepartmentId, UpdateDepartmentLocationsRequest Request);

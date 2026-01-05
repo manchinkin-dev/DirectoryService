@@ -1,5 +1,4 @@
-﻿using DirectoryService.Application;
-using DirectoryService.Application.Departments;
+﻿using DirectoryService.Application.Departments;
 using DirectoryService.Application.Locations;
 using DirectoryService.Application.Positions;
 using DirectoryService.Infrastructure.Repositories;

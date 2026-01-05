@@ -3,8 +3,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
-using Shared;
-using Shared.Errors;
+using Shared.Fails;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace DirectoryService.Presentation.EndpointResults;

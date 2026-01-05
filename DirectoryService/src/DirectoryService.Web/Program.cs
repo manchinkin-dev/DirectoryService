@@ -1,12 +1,11 @@
 using System.Globalization;
-using System.Text.Json.Serialization;
 using DirectoryService.Infrastructure;
 using DirectoryService.Presentation.EndpointResults;
 using DirectoryService.Web;
 using DirectoryService.Web.Middlewares;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Shared.Errors;
+using Shared.Fails;
 
 var builder = WebApplication.CreateBuilder(args);
 

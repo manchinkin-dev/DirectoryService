@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using DirectoryService.Domain.DepartmentLocations;
 using DirectoryService.Domain.DepartmentPositions;
-using Shared.Errors;
+using Shared.Fails;
 
 namespace DirectoryService.Domain.Departments;
 
@@ -95,5 +95,11 @@ public class Department
             path,
             parent.Depth + 1,
             departmentLocations);
+    }
+
+    public void UpdateLocations(IEnumerable<DepartmentLocation> departmentLocations)
+    {
+        _locations.Clear();
+        _locations.AddRange(departmentLocations);
     }
 }
