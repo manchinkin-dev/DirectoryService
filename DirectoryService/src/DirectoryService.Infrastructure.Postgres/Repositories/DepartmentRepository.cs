@@ -56,6 +56,20 @@ public class DepartmentRepository : IDepartmentRepository
         return result;
     }
 
+    public async Task<Result<Department, Error>> GetByIdWithLocks(
+        Guid departmentId,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _dbContext.Departments
+            .FromSql($"SELECT * FROM departments WHERE id = {departmentId} FOR UPDATE")
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (result == null)
+            return GeneralErrors.NotFound(departmentId);
+
+        return result;
+    }
+
     public async Task<UnitResult<Errors>> CheckExisting(
         Guid[] departmentIds,
         CancellationToken cancellationToken = default)
@@ -98,5 +112,49 @@ public class DepartmentRepository : IDepartmentRepository
         }
 
         return UnitResult.Success<Error>();
+    }
+
+    public Task<UnitResult<Error>> LockDescendantsByPath(string oldPath, CancellationToken cancellationToken)
+    {
+        try
+        {
+            _dbContext.Departments
+                .FromSqlInterpolated(
+                    $"SELECT * FROM departments WHERE path <@ {oldPath}::ltree AND path != {oldPath}::ltree FOR UPDATE");
+
+            return Task.FromResult(UnitResult.Success<Error>());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка блокировки потомков");
+            return Task.FromResult(UnitResult.Failure(GeneralErrors.Failure("Ошибка блокировки потомков")));
+        }
+    }
+
+    public Task<UnitResult<Error>> BulkUpdateDescendantsPathAndDepth(
+        string oldPathValue,
+        string pathValue,
+        int depth,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            _dbContext.Departments
+                .FromSqlInterpolated(
+                    $"""
+                     UPDATE departments
+                     SET path={pathValue}::ltree || subpath(path, nlevel({oldPathValue}::ltree)),
+                         depth= departments.depth + {depth},
+                         updated_at={DateTime.UtcNow}
+                     WHERE path <@{oldPathValue}::ltree and path!={oldPathValue}::ltree
+                     """);
+
+            return Task.FromResult(UnitResult.Success<Error>());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка обновления потомков");
+            return Task.FromResult(UnitResult.Failure(GeneralErrors.Failure("Ошибка обновления потомков")));
+        }
     }
 }
