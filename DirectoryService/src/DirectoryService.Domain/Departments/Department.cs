@@ -102,4 +102,21 @@ public class Department
         _locations.Clear();
         _locations.AddRange(departmentLocations);
     }
+
+    public int MoveTo(Department? parentDepartment)
+    {
+        int oldDepth = Depth;
+
+        ParentId = parentDepartment?.Id;
+
+        var newPath = parentDepartment == null
+            ? DepartmentPath.CreateParent(Identifier)
+            : parentDepartment.Path.CreateChild(Identifier);
+
+        Path = newPath;
+        Depth = parentDepartment == null ? 0 : parentDepartment.Depth + 1;
+        UpdatedAt = DateTime.UtcNow;
+
+        return Depth - oldDepth;
+    }
 }

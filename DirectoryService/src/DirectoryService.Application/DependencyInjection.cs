@@ -1,4 +1,5 @@
 ﻿using DirectoryService.Application.Departments.CreateDepartment;
+using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateDepartmentLocations;
 using DirectoryService.Application.Locations.CreateLocation;
 using DirectoryService.Application.Positions.CreatePosition;
@@ -15,6 +16,7 @@ public static class DependencyInjection
         services.AddScoped<CreatePositionHandler>();
         services.AddScoped<CreateDepartmentHandler>();
         services.AddScoped<UpdateDepartmentLocationsHandler>();
+        services.AddScoped<MoveDepartmentHandler>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 

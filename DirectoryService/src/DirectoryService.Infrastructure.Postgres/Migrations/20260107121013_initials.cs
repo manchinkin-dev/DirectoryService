@@ -1,5 +1,4 @@
 ﻿using System;
-using DirectoryService.Domain.Locations;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -7,11 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DirectoryService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initials : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:ltree", ",,");
+
             migrationBuilder.CreateTable(
                 name: "departments",
                 columns: table => new
@@ -20,8 +22,8 @@ namespace DirectoryService.Infrastructure.Migrations
                     name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     identifier = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     parent_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    path = table.Column<string>(type: "text", nullable: false),
-                    depth = table.Column<short>(type: "smallint", nullable: false),
+                    path = table.Column<string>(type: "ltree", nullable: false),
+                    depth = table.Column<int>(type: "integer", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -42,7 +44,7 @@ namespace DirectoryService.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
-                    address = table.Column<LocationAddress>(type: "jsonb", nullable: false),
+                    address = table.Column<string>(type: "jsonb", nullable: false),
                     timezone = table.Column<string>(type: "text", nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -140,9 +142,21 @@ namespace DirectoryService.Infrastructure.Migrations
                 column: "position_id");
 
             migrationBuilder.CreateIndex(
+                name: "idx_departments_path",
+                table: "departments",
+                column: "path")
+                .Annotation("Npgsql:IndexMethod", "gist");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_departments_parent_id",
                 table: "departments",
                 column: "parent_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_locations_address",
+                table: "locations",
+                column: "address",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_locations_name",

@@ -27,7 +27,6 @@ public class TransactionManager : ITransactionManager
         try
         {
             var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
-
             var transactionCreateLogger = _loggerFactory.CreateLogger<TransactionScope>();
 
             var transactionScope = new TransactionScope(transaction.GetDbTransaction(), transactionCreateLogger);
