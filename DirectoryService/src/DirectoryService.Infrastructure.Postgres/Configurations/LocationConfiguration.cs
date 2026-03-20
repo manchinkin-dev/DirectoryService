@@ -24,15 +24,16 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
                 l => l.Value,
                 id => new LocationId(id));
 
-        builder
-            .Property(l => l.Name)
-            .IsRequired()
-            .HasColumnName("name")
-            .HasMaxLength(120)
-            .HasConversion(
-                l => l.Value,
-                name => LocationName.Create(name).Value);
-        builder.HasIndex(l => l.Name).IsUnique();
+        builder.OwnsOne(l => l.Name, name =>
+        {
+            name.Property(x => x.Value)
+                .HasColumnName("name")
+                .HasMaxLength(120)
+                .IsRequired();
+
+            name.HasIndex(x => x.Value)
+                .IsUnique();
+        });
 
         builder
             .Property(l => l.Address)

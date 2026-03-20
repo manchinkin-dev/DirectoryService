@@ -1,4 +1,5 @@
 using System.Globalization;
+using DirectoryService.Application.Database;
 using DirectoryService.Infrastructure;
 using DirectoryService.Presentation.EndpointResults;
 using DirectoryService.Web;
@@ -17,6 +18,9 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddProgramDependencies(builder.Configuration);
 
 builder.Services.AddScoped<DirectoryServiceDbContext>(_ =>
+    new DirectoryServiceDbContext(builder.Configuration.GetConnectionString("DirectoryServiceDb")!,  builder.Environment.IsDevelopment()));
+
+builder.Services.AddScoped<IReadDbContext, DirectoryServiceDbContext>(_ =>
     new DirectoryServiceDbContext(builder.Configuration.GetConnectionString("DirectoryServiceDb")!,  builder.Environment.IsDevelopment()));
 
 builder.Services.AddOpenApi(

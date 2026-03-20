@@ -1,4 +1,5 @@
-﻿using DirectoryService.Domain.DepartmentLocations;
+﻿using DirectoryService.Application.Database;
+using DirectoryService.Domain.DepartmentLocations;
 using DirectoryService.Domain.DepartmentPositions;
 using DirectoryService.Domain.Departments;
 using DirectoryService.Domain.Locations;
@@ -9,7 +10,7 @@ using Npgsql;
 
 namespace DirectoryService.Infrastructure;
 
-public class DirectoryServiceDbContext : DbContext
+public class DirectoryServiceDbContext : DbContext, IReadDbContext
 {
     private readonly string _connectionString;
     private readonly bool _isDevelopment;
@@ -54,4 +55,14 @@ public class DirectoryServiceDbContext : DbContext
     public DbSet<DepartmentLocation> DepartmentLocations => Set<DepartmentLocation>();
 
     public DbSet<DepartmentPosition> DepartmentPositions => Set<DepartmentPosition>();
+
+    public IQueryable<Location> LocationsRead =>
+        Set<Location>()
+            .AsNoTracking()
+            .AsQueryable();
+
+    public IQueryable<DepartmentLocation> DepartmentLocationsRead =>
+        Set<DepartmentLocation>()
+            .AsNoTracking()
+            .AsQueryable();
 }
