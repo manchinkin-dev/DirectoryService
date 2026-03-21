@@ -65,4 +65,14 @@ public class DirectoryServiceDbContext : DbContext, IReadDbContext
         Set<DepartmentLocation>()
             .AsNoTracking()
             .AsQueryable();
+
+    public IQueryable<Department> DepartmentsRead =>
+        Set<Department>()
+            .AsNoTracking()
+            .AsQueryable();
+
+    public IQueryable<DepartmentPosition> DepartmentPositionsRead =>
+        Set<DepartmentPosition>()
+            .AsNoTracking()
+            .AsQueryable();
 }
