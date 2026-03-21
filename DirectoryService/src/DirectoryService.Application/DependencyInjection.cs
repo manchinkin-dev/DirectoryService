@@ -2,6 +2,7 @@
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateDepartmentLocations;
 using DirectoryService.Application.Locations.CreateLocation;
+using DirectoryService.Application.Locations.GetLocations;
 using DirectoryService.Application.Positions.CreatePosition;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ public static class DependencyInjection
         services.AddScoped<CreateDepartmentHandler>();
         services.AddScoped<UpdateDepartmentLocationsHandler>();
         services.AddScoped<MoveDepartmentHandler>();
+
+        services.AddScoped<GetLocationsHandler>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
