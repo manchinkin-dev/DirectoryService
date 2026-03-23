@@ -1,4 +1,5 @@
 ﻿using DirectoryService.Application.Departments.CreateDepartment;
+using DirectoryService.Application.Departments.GetTopDepartments;
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateDepartmentLocations;
 using DirectoryService.Contracts.Departments;
@@ -44,5 +45,13 @@ public class DepartmentsController : ControllerBase
          var command = new MoveDepartmentCommand(departmentId, request);
 
          return await handler.Handle(command, cancellationToken);
+     }
+
+     [HttpGet("top-positions")]
+     public async Task<EndpointResult<TopDepartmentsResponse>> GetTopDepartments(
+         [FromServices] GetTopDepartmentHandler handler,
+         CancellationToken cancellationToken)
+     {
+         return await handler.Handle(cancellationToken);
      }
 }
