@@ -1,4 +1,5 @@
-﻿using DirectoryService.Application.Database;
+﻿using System.Data.Common;
+using DirectoryService.Application.Database;
 using DirectoryService.Domain.DepartmentLocations;
 using DirectoryService.Domain.DepartmentPositions;
 using DirectoryService.Domain.Departments;
@@ -55,6 +56,8 @@ public class DirectoryServiceDbContext : DbContext, IReadDbContext
     public DbSet<DepartmentLocation> DepartmentLocations => Set<DepartmentLocation>();
 
     public DbSet<DepartmentPosition> DepartmentPositions => Set<DepartmentPosition>();
+
+    public DbConnection Connection => Database.GetDbConnection();
 
     public IQueryable<Location> LocationsRead =>
         Set<Location>()
