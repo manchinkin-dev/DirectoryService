@@ -1,4 +1,6 @@
 ﻿using DirectoryService.Application.Departments.CreateDepartment;
+using DirectoryService.Application.Departments.GetDepartmentChildren;
+using DirectoryService.Application.Departments.GetRootDepartments;
 using DirectoryService.Application.Departments.GetTopDepartments;
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateDepartmentLocations;
@@ -53,5 +55,26 @@ public class DepartmentsController : ControllerBase
          CancellationToken cancellationToken)
      {
          return await handler.Handle(cancellationToken);
+     }
+
+     [HttpGet("roots")]
+     public async Task<EndpointResult<RootDepartmentsResponse>> GetRootDepartments(
+         [FromQuery] RootDepartmentsRequest request,
+         [FromServices] GetRootDepartmentsHandler handler,
+         CancellationToken cancellationToken)
+     {
+         var query = new GetRootDepartmentQuery(request);
+         return await handler.Handle(query, cancellationToken);
+     }
+
+     [HttpGet("{parentId:guid}/children")]
+     public async Task<EndpointResult<DepartmentChildrenResponse>> GetDepartmentChildren(
+         [FromRoute] Guid parentId,
+         [FromQuery] DepartmentChildrenRequest request,
+         [FromServices] GetDepartmentChildrenHandler handler,
+         CancellationToken cancellationToken)
+     {
+         var query = new GetDepartmentChildrenQuery(parentId, request);
+         return await handler.Handle(query, cancellationToken);
      }
 }

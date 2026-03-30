@@ -1,4 +1,6 @@
 ﻿using DirectoryService.Application.Departments.CreateDepartment;
+using DirectoryService.Application.Departments.GetDepartmentChildren;
+using DirectoryService.Application.Departments.GetRootDepartments;
 using DirectoryService.Application.Departments.GetTopDepartments;
 using DirectoryService.Application.Departments.MoveDepartment;
 using DirectoryService.Application.Departments.UpdateDepartmentLocations;
@@ -22,6 +24,8 @@ public static class DependencyInjection
 
         services.AddScoped<GetLocationsHandler>();
         services.AddScoped<GetTopDepartmentHandler>();
+        services.AddScoped<GetRootDepartmentsHandler>();
+        services.AddScoped<GetDepartmentChildrenHandler>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 

@@ -1,4 +1,5 @@
 using System.Globalization;
+using Dapper;
 using DirectoryService.Application.Database;
 using DirectoryService.Infrastructure;
 using DirectoryService.Presentation.EndpointResults;
@@ -44,6 +45,8 @@ builder.Services.AddOpenApi(
                 return Task.CompletedTask;
             });
     });
+
+DefaultTypeMap.MatchNamesWithUnderscores = true;
 
 var app = builder.Build();
 
