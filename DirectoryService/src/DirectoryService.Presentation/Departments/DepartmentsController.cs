@@ -1,12 +1,15 @@
-﻿using DirectoryService.Application.Departments.CreateDepartment;
+﻿using CSharpFunctionalExtensions;
+using DirectoryService.Application.Departments.CreateDepartment;
 using DirectoryService.Application.Departments.GetDepartmentChildren;
 using DirectoryService.Application.Departments.GetRootDepartments;
 using DirectoryService.Application.Departments.GetTopDepartments;
 using DirectoryService.Application.Departments.MoveDepartment;
+using DirectoryService.Application.Departments.SoftDeleteDepartment;
 using DirectoryService.Application.Departments.UpdateDepartmentLocations;
 using DirectoryService.Contracts.Departments;
 using DirectoryService.Presentation.EndpointResults;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Fails;
 
 namespace DirectoryService.Presentation.Departments;
 
@@ -76,5 +79,15 @@ public class DepartmentsController : ControllerBase
      {
          var query = new GetDepartmentChildrenQuery(parentId, request);
          return await handler.Handle(query, cancellationToken);
+     }
+
+     [HttpDelete("{departmentId:guid}")]
+     public async Task<UnitResult<Errors>> SoftDeleteDepartment(
+         [FromRoute] Guid departmentId,
+         [FromServices] SoftDeleteDepartmentHandler handler,
+         CancellationToken cancellationToken)
+     {
+         var command = new SoftDeleteDepartmentCommand(departmentId);
+         return await handler.Handle(command, cancellationToken);
      }
 }
