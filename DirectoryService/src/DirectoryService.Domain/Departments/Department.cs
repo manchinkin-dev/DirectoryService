@@ -60,6 +60,8 @@ public class Department
 
     public DateTime UpdatedAt { get; private set; }
 
+    public DateTime DeletedAt { get; private set; }
+
     public static Result<Department, Error> CreateParent(
         DepartmentName name,
         Identifier identifier,
@@ -118,5 +120,13 @@ public class Department
         UpdatedAt = DateTime.UtcNow;
 
         return Depth - oldDepth;
+    }
+
+    public void SoftDelete()
+    {
+        DeletedAt = DateTime.UtcNow;
+        UpdatedAt = DeletedAt;
+        IsActive = false;
+        DepartmentPath.CreateDeletedPath(Identifier);
     }
 }

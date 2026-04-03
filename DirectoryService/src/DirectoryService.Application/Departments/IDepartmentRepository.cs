@@ -19,4 +19,8 @@ public interface IDepartmentRepository
     Task<UnitResult<Error>> LockDescendantsByPath(string oldPath, CancellationToken cancellationToken);
 
     Task<UnitResult<Error>> BulkUpdateDescendantsPathAndDepth(string oldPathValue, string pathValue, int depth, CancellationToken cancellationToken);
+
+    Task<UnitResult<Error>> BulkUpdateDescendantsPath(string oldPathValue, string pathValue, CancellationToken cancellationToken);
+
+    Task<UnitResult<Error>> DeactivateLocationsOrPositions(DepartmentId departmentId, CancellationToken cancellationToken);
 }

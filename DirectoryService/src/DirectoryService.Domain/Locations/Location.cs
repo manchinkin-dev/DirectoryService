@@ -39,5 +39,7 @@ public class Location
 
     public DateTime CreatedAt { get; private set; }
 
+    public DateTime DeletedAt { get; private set; }
+
     public DateTime UpdatedAt { get; private set; }
 }

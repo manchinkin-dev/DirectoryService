@@ -38,5 +38,7 @@ public class Position
 
     public DateTime CreatedAt { get; private set; }
 
+    public DateTime DeletedAt { get; private set; }
+
     public DateTime UpdatedAt { get; private set; }
 }

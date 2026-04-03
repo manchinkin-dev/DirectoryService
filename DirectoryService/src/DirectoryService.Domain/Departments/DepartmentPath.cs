@@ -24,4 +24,13 @@ public record DepartmentPath
     {
         return new DepartmentPath(value);
     }
+
+    public static DepartmentPath CreateDeletedPath(Identifier identifier)
+    {
+        string[] identifierParts = identifier.Value.Split(PATH_SEPERATOR);
+
+        identifierParts[^1] = $"deleted-{identifier.Value}";
+
+        return new DepartmentPath(string.Join(PATH_SEPERATOR, identifierParts));
+    }
 };

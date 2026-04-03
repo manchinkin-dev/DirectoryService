@@ -3,6 +3,7 @@ using DirectoryService.Application.Departments;
 using DirectoryService.Domain.Departments;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using Shared.Fails;
 
 namespace DirectoryService.Infrastructure.Repositories;
@@ -155,6 +156,90 @@ public class DepartmentRepository : IDepartmentRepository
         {
             _logger.LogError(ex, "Ошибка обновления потомков");
             return Task.FromResult(UnitResult.Failure(GeneralErrors.Failure("Ошибка обновления потомков")));
+        }
+    }
+
+    public Task<UnitResult<Error>> BulkUpdateDescendantsPath(
+        string oldPathValue,
+        string pathValue,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            _dbContext.Departments
+                .FromSqlInterpolated(
+                    $"""
+                     UPDATE departments
+                     SET path={pathValue}::ltree || subpath(path, nlevel({oldPathValue}::ltree)),
+                         updated_at={DateTime.UtcNow}
+                     WHERE path <@{oldPathValue}::ltree and path!={oldPathValue}::ltree
+                     """);
+
+            return Task.FromResult(UnitResult.Success<Error>());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка обновления потомков");
+            return Task.FromResult(UnitResult.Failure(GeneralErrors.Failure("Ошибка обновления потомков")));
+        }
+    }
+
+    public async Task<UnitResult<Error>> DeactivateLocationsOrPositions(
+        DepartmentId departmentId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            const string sql = """
+                               WITH deactivated_locations AS (
+                                   UPDATE locations l
+                                       SET is_active = false,
+                                           deleted_at = now(),
+                                           updated_at = now()
+                                       FROM department_locations dl
+                                       WHERE l.id = dl.location_id
+                                           AND dl.department_id = @departmentId
+                                           AND l.is_active
+                                           AND NOT EXISTS (
+                                               SELECT 1
+                                               FROM department_locations dl2
+                                               JOIN departments d ON d.id = dl2.department_id AND d.is_active
+                                               WHERE dl2.location_id = dl.location_id
+                                                   AND d.id != @departmentId
+                                           )
+                               )
+                               UPDATE positions p
+                               SET is_active = false,
+                                   deleted_at = now(),
+                                   updated_at = now()
+                               FROM department_positions dp
+                               WHERE p.id = dp.position_id
+                                   AND dp.department_id = @departmentId
+                                   AND p.is_active
+                                   AND NOT EXISTS (
+                                       SELECT 1
+                                       FROM department_positions dp2
+                                       JOIN departments d ON d.id = dp2.department_id AND d.is_active
+                                           WHERE dp2.position_id = dp.position_id
+                                           AND d.id != @departmentId
+                                   )
+                               """;
+
+            await _dbContext.Database.ExecuteSqlRawAsync(
+                sql,
+                parameters: [new NpgsqlParameter("departmentId", departmentId.Value)],
+                cancellationToken);
+
+            return await Task.FromResult(UnitResult.Success<Error>());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                "Ошибка soft удаления локаций или позиций у подразделения с идентификатором - {departmentId}",
+                departmentId.Value);
+
+            return await Task.FromResult(UnitResult.Failure(GeneralErrors.Failure(
+                $"Ошибка soft удаления локаций или позиций у подразделения с идентификатором - {departmentId.Value}")));
         }
     }
 }
